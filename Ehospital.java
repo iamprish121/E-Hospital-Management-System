@@ -8,15 +8,15 @@ class Info
 {
     Info()
     {
-        System.out.print("\t\t\t\t\t ___________________________________________________________________________________________\n");
-        System.out.print("\t\t\t\t\t|                                           		                                        |\n");
-        System.out.print("\t\t\t\t\t|                                           		                                        |\n");
-        System.out.print("\t\t\t\t\t|                                           		                                        |\n");
+        System.out.print("\t\t\t\t\t _________________________________________________________________________________________\n");
+        System.out.print("\t\t\t\t\t|                                           		                                    |\n");
+        System.out.print("\t\t\t\t\t|                                           		                                    |\n");
+        System.out.print("\t\t\t\t\t|                                           		                                    |\n");
         System.out.print("\t\t\t\t\t|                            WELCOME TO E-HEALTH CARE MANAGEMENT SYSTEM                     |\n");
         System.out.print("\t\t\t\t\t|                                                                                           |\n");
         System.out.print("\t\t\t\t\t|                                                                                           |\n");
         System.out.print("\t\t\t\t\t|                                                                                           |\n");
-        System.out.print("\t\t\t\t\t|                                         -Brought To You by                                |\n");
+        System.out.print("\t\t\t\t\t|                                         -Brought To Yo  by                                |\n");
         System.out.print("\t\t\t\t\t|                                      	    Priyanshu Anand                                 |\n");
         System.out.print("\t\t\t\t\t|___________________________________________________________________________________________|\n");
     }
@@ -138,54 +138,106 @@ class Info
         }
         menu();
     }
-    void patient()
-    {
+    void patient() {
         System.out.print("Enter the patient's file name: ");
-
-        String fileName =scan.next();
+        String fileName = scan.next();
         getCurrentTimeUsingDate();
-
+    
         try {
-            // Assume default encoding.
-            FileWriter fileWriter = new FileWriter(fileName+".txt");
-
-            // Always wrap FileWriter in BufferedWriter.
+            // Use a FileWriter wrapped in a BufferedWriter
+            FileWriter fileWriter = new FileWriter(fileName + ".txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-            // Note that write() does not automatically
-            // append a newline character.
+    
             System.out.print("\n********************************************************************\n");
-            bufferedWriter.write("Date of admission: "+dadm);
+            bufferedWriter.write("Date of admission: " + dadm);
             bufferedWriter.newLine();
-            System.out.print("\nName : ");name=readString();bufferedWriter.write("Name : "+name);
+    
+            // Collect patient details
+            System.out.print("\nName: ");
+            name = readString();
+            bufferedWriter.write("Name: " + name);
             bufferedWriter.newLine();
-            System.out.print("\nAddress : ");address=readString();bufferedWriter.write("Address : "+address);
+    
+            System.out.print("\nAddress: ");
+            address = readString();
+            bufferedWriter.write("Address: " + address);
             bufferedWriter.newLine();
-            System.out.print("\nContact Number : ");contact=scan.nextLong();bufferedWriter.write("Contact Number : "+contact);
+    
+            // Validate contact number
+            boolean validContact = false;
+            while (!validContact) {
+                System.out.print("\nContact Number (10 digits): ");
+                if (scan.hasNextLong()) {
+                    contact = scan.nextLong();
+                    if (String.valueOf(contact).length() == 10) {
+                        validContact = true;
+                        bufferedWriter.write("Contact Number: " + contact);
+                        bufferedWriter.newLine();
+                    } else {
+                        System.out.println("Invalid contact number. Please enter a 10-digit number.");
+                    }
+                } else {
+                    System.out.println("Invalid input. Please enter a valid contact number.");
+                    scan.next(); // Clear the invalid input
+                }
+            }
+    
+            // Validate age
+            boolean validAge = false;
+            while (!validAge) {
+                System.out.print("\nAge (positive number): ");
+                if (scan.hasNextInt()) {
+                    age = scan.nextInt();
+                    if (age > 0) {
+                        validAge = true;
+                        bufferedWriter.write("Age: " + age);
+                        bufferedWriter.newLine();
+                    } else {
+                        System.out.println("Invalid age. Please enter a positive number.");
+                    }
+                } else {
+                    System.out.println("Invalid input. Please enter a valid age.");
+                    scan.next(); // Clear the invalid input
+                }
+            }
+    
+            System.out.print("\nSex: ");
+            sex = scan.next();
+            bufferedWriter.write("Sex: " + sex);
             bufferedWriter.newLine();
-            System.out.print("\nAge : ");age=scan.nextInt();bufferedWriter.write("Age : "+age);
+    
+            System.out.print("\nBlood Group: ");
+            bg = scan.next();
+            bufferedWriter.write("Blood Group: " + bg);
             bufferedWriter.newLine();
-            System.out.print("\nSex : ");sex=scan.next();bufferedWriter.write("Sex : "+sex);
+    
+            System.out.print("\nAny Major Disease Suffered Earlier: ");
+            disease = readString();
+            bufferedWriter.write("Any Major Disease Suffered Earlier: " + disease);
             bufferedWriter.newLine();
-            System.out.print("\nBlood Group : ");bg=scan.next();bufferedWriter.write("Blood Group : "+bg);
+    
+            System.out.print("\nPatient ID: ");
+            id = scan.nextLong();
+            bufferedWriter.write("Patient ID: " + id);
             bufferedWriter.newLine();
-            System.out.print("\nAny Major disease suffered earlier : ");disease=readString();bufferedWriter.write("Any Major disease suffered earlier : "+disease);
-            bufferedWriter.newLine();
-            System.out.print("\nPatient ID : ");id=scan.nextLong();bufferedWriter.write("Patient ID : "+id);
-            bufferedWriter.newLine();
+    
             System.out.print("\n********************************************************************\n");
             bufferedWriter.write("\n********************************************************************\n\n");
-            bufferedWriter.newLine();System.out.print("\nInformation Saved Successfully\n");
-
+            bufferedWriter.newLine();
+            System.out.print("\nInformation Saved Successfully\n");
+    
             // Always close files.
             bufferedWriter.close();
+        } catch (IOException ex) {
+            System.out.println("Error writing to file '" + fileName + "': " + ex.getMessage());
+        } catch (InputMismatchException ex) {
+            System.out.println("Invalid input: " + ex.getMessage());
+            scan.nextLine(); // Clear the invalid input
+        } finally {
+            pressAnyKeyToContinue();
         }
-        catch(IOException ex)
-        {
-            System.out.println("Error writing to file '"+ fileName +"'");
-        }
-        pressAnyKeyToContinue();
     }
+    
     void diagnos()
     {
         String symptom;
@@ -325,6 +377,7 @@ class Info
         }
         pressAnyKeyToContinue();
     }
+    
     void exit()
     {
         System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\n");
